@@ -1,16 +1,16 @@
 /*
-File: LinkedList.h
+File: DoublyLinkedList.h
 Auth: Jordan Dodson
-Date: 1/22/16
-Info: Templated implementation of a standard linked list.
+Date: 4/23/16
+Info: Templated implementation of a doubly linked list.
 */
 
-#ifndef _ALGORITHMS_LINKED_LIST_H
-#define _ALGORITHMS_LINKED_LIST_H
+#ifndef _ALGORITHMS_DOUBLY_LINKED_LIST_H
+#define _ALGORITHMS_DOUBLY_LINKED_LIST_H
 
 // We will use a templated class to implement a linked list.
 template <typename T>
-class LinkedList {
+class DoublyLinkedList {
 
 private:
 
@@ -18,12 +18,13 @@ private:
   struct Node {
     T item;
     Node* next;
+    Node* prev;
   };
 
-  // Points to the head of the linked list.
+  // Points to the head of the list.
   Node* m_head;
 
-  // Stores the number of items in the linked list.
+  // Stores the number of items in the list.
   unsigned long m_length;
 
 public:
@@ -31,7 +32,7 @@ public:
   /**
     * Default constructor.
     */
-  LinkedList() : m_head(nullptr), m_length(0) { /* Empty body */ }
+  DoublyLinkedList() : m_head(nullptr), m_length(0) { /* Empty body */ }
 
 
   /**
@@ -42,9 +43,15 @@ public:
     // Allocate memory to hold the new item
     Node* n = new Node;
 
-    // Set up the new node
+    // Set up the new head node
     n->item = x;
     n->next = m_head;
+    n->prev = nullptr;
+
+    // Set up the former head node
+    if (m_length  > 0) {
+      m_head->prev = n;
+    }
 
     // Insert the new node at the head of the list
     m_head = n;
@@ -70,6 +77,10 @@ public:
       // Store a reference to the head before updating it
       ptr = m_head;
 
+      if (m_length > 1) {
+        m_head->next->prev = nullptr;
+      }
+
       // Advance the head of the list
       m_head = m_head->next;
 
@@ -94,15 +105,14 @@ public:
     */
   T peek() const {
 
-    T res;
-
     if (m_length > 0) {
-      res = m_head->item;
+
+      return m_head->item;
     } else {
+
+      // Underflow
       throw 20;
     }
-
-    return res;
   }
 
 
@@ -123,6 +133,7 @@ public:
         return true;
       }
 
+      // Increment the iterative pointer
       ptr = ptr->next;
     }
 
@@ -133,43 +144,43 @@ public:
 
   /**
     * Remove the given item from the list.
+    *
+    * TODO: Under construction
     */
   bool remove(T x) {
     
     // Points to the last node searched
     Node *ptr;
 
-    // Used when removing and deallocating a node
-    Node *tmp;
-
-    // Begin searching at the head of the list
-    ptr = m_head;
-
     // Only attempt to remove if the list is non-empty
     if (m_length > 0) {
 
-      // Check if the item is at the head
-      if (ptr->item == x) {
-        this->pop();
-        return true;
-      }
-
-      // At this point, we have established the invariant
-      // mentioned earlier: that ptr points to the last
-      // node searched.
+      // Begin searching at the head of the list
+      ptr = m_head;
 
       // Search for the item in the rest of the list
-      while (ptr->next != nullptr) {
+      while (ptr != nullptr) {
 
-        if (ptr->next->item == x) {
+        if (ptr->item == x) {
 
-          tmp = ptr->next;
- 
-          ptr->next = ptr->next->next;
+          if (ptr->prev != nullptr) {
+            if (ptr->next != nullptr) {
+              ptr->prev->next = ptr->next;
+              ptr->next->prev = ptr->prev;
+            } else {
+              ptr->prev->next = nullptr;
+            }
+          } else {
+            m_head = ptr->next;
+
+            if (ptr->next != nullptr) {
+              ptr->next->prev = nullptr;
+            }
+          }
 
           m_length--;
 
-          delete tmp;
+          delete ptr;
 
           return true;
         }
@@ -177,6 +188,10 @@ public:
         // Move to the next node
         ptr = ptr->next;
       }
+    } else {
+
+      // Underflow
+      throw 20;
     }
 
     // Return false if the item was not found

@@ -12,7 +12,7 @@ template <typename T>
 class Queue {
 
   private:
-    unsigned long next_add, next_remove, length, capacity;
+    unsigned long next_add, next_remove, m_length, capacity;
     T* arr;
 
   public:
@@ -20,7 +20,7 @@ class Queue {
     /**
       * Default constructor
       */
-    Queue() : next_add(0), next_remove(0), length(0), capacity(32) {
+    Queue() : next_add(0), next_remove(0), m_length(0), capacity(32) {
       arr = new T[32];
     }
 
@@ -36,7 +36,7 @@ class Queue {
     void enqueue(T item) {
 
       // Check if the queue is full. Double the capacity if so.
-      if (length == capacity) {
+      if (m_length == capacity) {
 
         // Allocate memory for the new backing array
         arr = (T*) realloc(arr, 2 * capacity * sizeof(T));
@@ -47,6 +47,7 @@ class Queue {
 
         // Copy the items to the new array
         if (next_remove == 0) {
+          // No need to shift all elements in this case
           next_add = capacity;
         } else {
           // Shift the data to reestablish the queue
@@ -63,7 +64,7 @@ class Queue {
 
 
       arr[next_add] = item;
-      length++;
+      m_length++;
 
       if (next_add == capacity - 1) {
         next_add = 0;
@@ -82,7 +83,7 @@ class Queue {
 
       T res;
 
-      if (length > 0) {
+      if (m_length > 0) {
 
         res = arr[next_remove];
 
@@ -92,7 +93,7 @@ class Queue {
           next_remove++;
         }
 
-        length--;
+        m_length--;
       }
 
       return res;
@@ -115,6 +116,6 @@ class Queue {
       * Return: true if the queue is empty, false otherwise
       */
     bool isEmpty() const {
-      return (length == 0);
+      return (m_length == 0);
     }
 };

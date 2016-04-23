@@ -6,7 +6,7 @@ Info: Demonstrate the functionality of the LinkedList class.
 */
 
 // Libraries
-#include "LinkedList.h"
+#include "DoublyLinkedList.h"
 #include <iostream>
 
 // Using declarations
@@ -16,8 +16,8 @@ using std::endl;
 // Main
 int main(int argc, char* argv[]) {
 
-  LinkedList<int>  l1;  // A linked list of ints
-  LinkedList<char> c1;  // A linked list of chars
+  DoublyLinkedList<int>  l1;  // A linked list of ints
+  DoublyLinkedList<char> c1;  // A linked list of chars
 
   l1.push(1);
   c1.push('a');
