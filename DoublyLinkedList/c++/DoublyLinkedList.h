@@ -16,15 +16,15 @@ private:
 
   // Structure for the nodes that will form the list
   struct Node {
-    T item;
-    Node* next;
-    Node* prev;
+    T item;     // The data at this node
+    Node* next; // The next node
+    Node* prev; // The previous node
   };
 
   // Points to the head of the list.
   Node* m_head;
 
-  // Stores the number of items in the list.
+  // The number of nodes in the list.
   unsigned long m_length;
 
 public:
@@ -118,6 +118,8 @@ public:
 
   /**
     * Test whether the list contains the given item.
+    *
+    * x : The item to search for.
     */
   bool contains(T x) const {
 
@@ -133,7 +135,7 @@ public:
         return true;
       }
 
-      // Increment the iterative pointer
+      // Move to the next node
       ptr = ptr->next;
     }
 

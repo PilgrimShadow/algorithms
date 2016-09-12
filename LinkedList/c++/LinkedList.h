@@ -94,15 +94,13 @@ public:
     */
   T peek() const {
 
-    T res;
-
     if (m_length > 0) {
-      res = m_head->item;
+      return m_head->item;
     } else {
+
+      // Underflow
       throw 20;
     }
-
-    return res;
   }
 
 
@@ -117,12 +115,14 @@ public:
     // Begin searching at the head of the list
     ptr = m_head;
 
-    // Return true as soon as the item is found
     while (ptr != nullptr) {
+
+      // Return true as soon as the item is found
       if (ptr->item == x) {
         return true;
       }
 
+      // Move to the next item
       ptr = ptr->next;
     }
 
