@@ -1,7 +1,6 @@
 # Scala / Java
 *.class
 
-
 # Python
 __pycache__/
 
