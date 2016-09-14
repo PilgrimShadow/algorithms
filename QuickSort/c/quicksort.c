@@ -16,7 +16,6 @@ void swap      (int *arr, int i, int j);
 void quicksort (int *arr, int p, int r);
 void quicksort_k (int *arr, int p, int r, int k);
 void insertion_sort(int *arr, int p, int r);
-void selection_sort(int *arr, int p, int r);
 void quickinsort(int *arr, int p, int r, int k);
 void randomized_quicksort (int *arr, int p, int r);
 bool is_sorted(int *arr, int p, int r);
@@ -45,7 +44,7 @@ int main(int argc, char* argv[]) {
   }
 
   // Sort the array of ints.
-  selection_sort(arr, 0, argc-1);
+  quicksort(arr, 0, argc-1);
 
   // Display the contents of the now-sorted array.
   show(arr, argc-1);
@@ -295,21 +294,3 @@ void quickinsort(int *arr, int p, int r, int k) {
   insertion_sort(arr, p, r);
 }
 
-// [p, r)
-void selection_sort(int *arr, int p, int r) {
-
-  int i, j, max_ind;
-
-  for (i=p; i<r; i++) {
-    max_ind = i;
-
-    for (j=i+1; j<r; j++) {
-      if (arr[j] < arr[max_ind]) {
-        max_ind = j;
-      }
-    }
-
-    swap(arr, i, max_ind);
-  }
-
-}
