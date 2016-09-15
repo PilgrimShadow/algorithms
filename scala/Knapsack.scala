@@ -1,3 +1,6 @@
+package com.jgdodson.algorithms
+
+
 /*
   AUTH: Jordan Dodson
   FILE: knapsack.scala
