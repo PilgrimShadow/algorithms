@@ -32,3 +32,6 @@ __pycache__/
 *.exe
 *.out
 *.app
+
+# Swap files
+*.swp
