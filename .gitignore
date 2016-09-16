@@ -1,6 +1,9 @@
 # Scala / Java
 *.class
 
+#sbt
+target/
+
 # Python
 __pycache__/
 

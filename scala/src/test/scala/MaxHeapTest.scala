@@ -3,7 +3,7 @@ import org.scalacheck.Gen
 import org.scalacheck.Properties
 import org.scalacheck.Prop.{forAll, BooleanOperators}
 
-import myHeap.MaxHeap
+import com.jgdodson.algorithms.MaxHeap
 
 object MaxHeapTest extends Properties("MaxHeap") {
 
