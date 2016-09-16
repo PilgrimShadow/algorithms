@@ -1,45 +1,65 @@
 package com.jgdodson.algorithms
 
+
+import Helpers.swap
+import InsertionSort.insertionSort
+import math.Ordering
+
+
 object Quicksort {
 
-  def quicksort(arr: Array[Int]): Unit = {
+  def quicksort[T](arr: Array[T])(implicit ord: Ordering[T]): Array[T] = {
 
-    quicksort(arr, 0, arr.length-1)
+    quicksort(arr, 0, arr.length)
 
+    // Return a reference to the now-sorted array
+    return arr
   }
 
-  def quicksort(arr: Array[Int], p: Int, r: Int): Unit = {
 
-    if (p < r) {
+  def quicksort[T](arr: Array[T], p: Int, r: Int)(implicit ord: Ordering[T]): Unit = {
+
+    if ( r-p > 1 ) {
       val q = partition(arr, p, r)
-      quicksort(arr, p, q-1)
+      quicksort(arr, p,   q)
       quicksort(arr, q+1, r)
     }
   }
 
-  // Partition the closed interval [p, r]
-  private def partition(arr: Array[Int], p: Int, r: Int): Int = {
 
-    var t = 0
+  def quickinsort[T](arr: Array[T], p: Int, r: Int, n: Int)(implicit ord: Ordering[T]): Unit = {
+
+    if ( r-p > n ) {
+      val q = partition(arr, p, r)
+      quickinsort(arr, p,   q, n)
+      quickinsort(arr, q+1, r, n)
+    } else if ( r-p > 1 ) {
+      insertionSort(arr, p, r)
+    }
+
+  }
+
+
+  // Partition the half-open interval [p, r)
+  private def partition[T](arr: Array[T], p: Int, r: Int)(implicit ord: Ordering[T]): Int = {
+
     var i = p
-    val pivot = arr(r);
+    val pivot = arr(r-1)
 
-    for (j <- p until r) {
-      if (arr(j) < pivot) {
+    while ( ord.lt(arr(i), pivot) ) {
+      i += 1
+    }
 
-        // Swap
-        t = arr(i)
-        arr(i) = arr(j)
-        arr(j) = t
+    for (j <- i+1 until r) {
+      if ( ord.lt(arr(j), pivot) ) {
 
-        i += 1;
+        swap(arr, i, j)
+        i += 1
       }
     }
 
     // Swap pivot element into place
-    t = arr(i)
-    arr(i) = arr(r)
-    arr(r) = t
+    swap(arr, i, r)
 
     return i
   }

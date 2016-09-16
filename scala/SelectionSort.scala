@@ -1,5 +1,9 @@
 package com.jgdodson.algorithms
 
+
+import Helpers.swap
+import math.Ordering
+
 object SelectionSort {
 
   def selectionSort(arr: Array[Int]): Unit = {
@@ -7,7 +11,7 @@ object SelectionSort {
     selectionSort(arr, 0, arr.length)
   }
 
-  def selectionSort(arr: Array[Int], p: Int, r: Int): Unit = {
+  def selectionSort[T](arr: Array[T], p: Int, r: Int)(implicit ord: Ordering[T]): Array[T] = {
 
     var t = 0
     var min_ind = 0
@@ -16,15 +20,16 @@ object SelectionSort {
       min_ind = i
 
       for (j <- i+1 until r) {
-        if (arr(j) < arr(min_ind)) {
+        if ( ord.lt(arr(j), arr(min_ind)) ) {
           min_ind = j
         }
       }
 
-      t = arr(i)
-      arr(i) = arr(min_ind)
-      arr(min_ind) = t
+      swap(arr, i, min_ind)
     }
+
+    // Return a reference to the now-sorted array
+    arr
   }
 
 }

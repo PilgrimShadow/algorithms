@@ -1,14 +1,17 @@
 package com.jgdodson.algorithms
 
-/*
-  AUTH: Jordan Dodson
-  INFO: Implementation of bubblesort
-*/
-
+import Helpers.swap
+import math.Ordering
 
 object BubbleSort {
 
-  def bubbleSort(arr: Array[Int]): Array[Int] = {
+  /**
+    * Sort an Array of type T objects using bubblesort
+    *
+    * @param arr The array to be sorted
+    * @param ord The ordering to use when sorting
+    */
+  def bubbleSort[T](arr: Array[T])(implicit ord: Ordering[T]): Array[T] = {
 
     // To get us going
     var swapped = true
@@ -24,7 +27,7 @@ object BubbleSort {
 
       // Bubble values up through the unsorted range
       for (i <- 0 until j) {
-        if (arr(i) > arr(i+1)) {
+        if ( ord.gt(arr(i), arr(i+1)) ) {
           swap(arr, i, i+1)
           swapped = true
         }
@@ -37,11 +40,5 @@ object BubbleSort {
   // Return a reference to the now-sorted array
   return arr
 }
-
-  def swap(arr: Array[Int], i: Int, j: Int): Unit = {
-    val t = arr(i)
-    arr(i) = arr(j)
-    arr(j) = t
-  }
 
 }

@@ -1,25 +1,15 @@
 package com.jgdodson.algorithms
 
-
-/*
-  AUTH: Jordan Dodson
-  FILE: knapsack.scala
-  DATE: 2016-9-13
-  INFO: Solution of the 0/1 knapsack problem
-*/
-
 object Knapsack {
 
   def knapsack(items: Vector[(Int, Int)], w: Int): Vector[(Int, Set[Int])]  = {
 
-    val subs = Array.ofDim[Int](w+1)
+    val subs = Array.tabulate[Int](w+1)(_ => 0)
     val sets = Array.tabulate[Set[Int]](w+1)(_ => Set[Int]())
  
     // Initialize with the first-item solution
     for (j <- 0 to w) {
-      if ( items(0)._1 > j ) {
-        subs(j) = 0
-      } else {
+      if ( items(0)._1 <= j ) {
         subs(j) = items(0)._2
         sets(j)  = Set(0)
       }
@@ -46,7 +36,7 @@ object Knapsack {
       }
     }
 
-    subs.zip(sets.map(_.toSet)).toVector
+    subs.zip(sets).toVector
   }
 
 }
