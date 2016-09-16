@@ -14,7 +14,7 @@ import math.Ordering
   * @param arr      The array that backs the heap.
   * @param heapSize The number of array elements to use for the heap.
   */
-class MaxHeap(val arr: Array[Int], var heapSize: Int) {
+class MaxHeap[T](val arr: Array[T], var heapSize: Int)(implicit ord: Ordering[T]) {
 
   val length: Int = arr.length
 
@@ -34,7 +34,7 @@ class MaxHeap(val arr: Array[Int], var heapSize: Int) {
   //-Special Methods----------------------------------------
 
   // This allows one to index directly into the array backing the heap.
-  def apply(index: Int) = arr(index)
+  def apply(index: Int): T = arr(index)
 
   //-End Special Methods------------------------------------
 
@@ -47,14 +47,14 @@ class MaxHeap(val arr: Array[Int], var heapSize: Int) {
 
   // These methods allow a user of the heap to get the keys of the
   // children and parents of the given index.
-  def leftKey(i: Int): Int = this.apply(left(i))
+  def leftKey(i: Int): T = this.apply(left(i))
 
-  def rightKey(i: Int): Int = this.apply(right(i))
+  def rightKey(i: Int): T = this.apply(right(i))
 
-  def parentKey(i: Int): Int = this.apply(parent(i))
+  def parentKey(i: Int): T = this.apply(parent(i))
 
   // Sort the array in place. This destroys the heap.
-  def sort(): Array[Int] = {
+  def sort(): Array[T] = {
     heapSize = length
 
     buildMaxHeap()
@@ -67,21 +67,22 @@ class MaxHeap(val arr: Array[Int], var heapSize: Int) {
       maxHeapify(0)
     }
 
+    // Return a reference to the now-sorted array
     arr
   }
 
   private def maxHeapify2(i: Int): Unit = {
-    val Left = left(i)
-    val Right = right(i)
-    var largest = i
+    val l: Int = left(i)
+    val r: Int = right(i)
+    var largest: Int = i
 
 
-    if (Left < heapSize && arr(Left) > arr(largest)) {
-      largest = Left
+    if ( l < heapSize && ord.gt(arr(l), arr(largest)) ) {
+      largest = l
     }
 
-    if (Right < heapSize && arr(Right) > arr(largest)) {
-      largest = Right
+    if ( r < heapSize && ord.gt(arr(r), arr(largest)) ) {
+      largest = r
     }
 
     if (largest != i) {
@@ -89,6 +90,7 @@ class MaxHeap(val arr: Array[Int], var heapSize: Int) {
       maxHeapify(largest)
     }
   }
+
 
   // Builds a heap with size determined by heapSize.
   private def buildMaxHeap(): Unit = {
@@ -103,13 +105,13 @@ class MaxHeap(val arr: Array[Int], var heapSize: Int) {
 
   private def maxHeapify(i: Int): Unit = {
 
-    val l = left(i)  // Index of the left child if it exists
-    val r = right(i) // Index of the right child if it exists
+    val l: Int = left(i)  // Index of the left child if it exists
+    val r: Int = right(i) // Index of the right child if it exists
 
     if (l < heapSize) {
-      var largest = if (arr(l) > arr(i)) l else i
+      var largest = if ( ord.gt(arr(l), arr(i)) ) l else i
 
-      if (r < heapSize && arr(r) > arr(largest)) {
+      if ( r < heapSize && ord.gt(arr(r), arr(largest)) ) {
         largest = r
       }
 
@@ -121,13 +123,13 @@ class MaxHeap(val arr: Array[Int], var heapSize: Int) {
   }
 
   private def maxHeapify3(i: Int): Unit = {
-    val Left: Int = left(i)
-    val Right: Int = right(i)
+    val l: Int = left(i)
+    val r: Int = right(i)
 
-    var largest = if (Left < heapSize && arr(Left) > arr(i)) Left else i
+    var largest = if ( l < heapSize && ord.gt(arr(l), arr(i)) ) l else i
 
-    if (Right < heapSize && arr(Right) > arr(largest)) {
-      largest = Right
+    if ( r < heapSize && ord.gt(arr(r), arr(largest)) ) {
+      largest = r
     }
 
     if (largest != i) {
@@ -137,45 +139,34 @@ class MaxHeap(val arr: Array[Int], var heapSize: Int) {
   }
 
   // Increase the value of the key at index i. Then, restore the heap property.
-  def increaseKey(i: Int, k: Int): Unit = {
-    if (k <= arr(i)) {
+  def increaseKey(i: Int, k: T): Unit = {
+    if ( ord.lteq(k, arr(i)) ) {
       throw new Error("new key is not greater than current key")
     }
 
-    var j = i // Var for looping.
+    var j = i  // Var for looping.
     arr(j) = k // Increase the key.
 
     // Float the new key up the heap until the heap property is restored.
-    while (j > 0 && arr(j) > arr(parent(j))) {
+    while ( j > 0 && ord.gt(arr(j), arr(parent(j))) ) {
       swap(arr, j, parent(j))
       j = parent(j)
     }
 
   }
 
-  // Add a new element to the heap while maintaining the heap property.
-  // Increment the heapSize, but throw an exception if the heap is full.
-  def insert2(n: Int): MaxHeap = {
+
+  def insert(v: T): MaxHeap[T] = {
     if (heapSize == length) {
       throw new Error("Heap is full.")
     }
 
-    arr(heapSize) = Int.MinValue
-    increaseKey(heapSize, n)
-    heapSize += 1
-    this // for chaining
-  }
-
-  def insert(n: Int): MaxHeap = {
-    if (heapSize == length) {
-      throw new Error("Heap is full.")
-    }
-
-    arr(heapSize) = n
+    arr(heapSize) = v
 
     var j = heapSize // Var for looping.
+
     // Float the new key up the heap until the heap property is restored.
-    while (j > 0 && arr(j) > arr(parent(j))) {
+    while ( j > 0 && ord.gt(arr(j), arr(parent(j))) ) {
       swap(arr, j, parent(j))
       j = parent(j)
     }
@@ -188,21 +179,18 @@ class MaxHeap(val arr: Array[Int], var heapSize: Int) {
 
 object MaxHeap {
 
-  def apply(arr: Array[Int]): MaxHeap = {
+  def apply[T](arr: Array[T])(implicit ord: Ordering[T]): MaxHeap[T] = {
     new MaxHeap(arr, arr.length)
   }
 
-  def apply(arr: Array[Int], heapSize: Int): MaxHeap = {
+  def apply[T](arr: Array[T], heapSize: Int)(implicit ord: Ordering[T]): MaxHeap[T] = {
     new MaxHeap(arr, heapSize)
   }
 
-  // Create an empty heap (heapSize = 0) with the given capacity.
-  def apply(capacity: Int) = {
-    new MaxHeap(Array.fill(capacity)(0), 0)
+  /*
+  def apply[T](keys: T*): MaxHeap[T] = {
+    new MaxHeap(keys.toArray[T], keys.length)
   }
-
-  def apply(keys: Int*): MaxHeap = {
-    new MaxHeap(keys.toArray, keys.length)
-  }
+  */
 
 }
