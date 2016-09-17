@@ -1,29 +1,20 @@
-import org.scalacheck.Gen
-import org.scalacheck.Properties
-import org.scalacheck.Prop.{forAll, BooleanOperators}
+import com.jgdodson.algorithms.BubbleSort.bubbleSort 
 
-import com.jgdodson.algorithms.BubbleSort.bubbleSort
+class BubbleSortTestBoolean extends GenericSortingTests[Boolean](bubbleSort [Boolean], "Bubble Sort [Boolean]")
 
-object BubbleSortTest extends Properties("BubbleSort") {
+class BubbleSortTestByte extends GenericSortingTests[Byte](bubbleSort [Byte], "Bubble Sort [Byte]")
 
-  property("Sort the array [Int]") = forAll { (arr: Array[Int]) =>
-    bubbleSort(arr)
-    (0 until arr.length-1).forall(i => arr(i) <= arr(i+1))
-  }
+class BubbleSortTestShort extends GenericSortingTests[Short](bubbleSort [Short], "Bubble Sort [Short]")
 
+class BubbleSortTestInt extends GenericSortingTests[Int](bubbleSort [Int], "Bubble Sort[Int]")
 
-  property("Length of original array is unchanged") = forAll { (arr: Array[Int]) =>
+class BubbleSortTestLong extends GenericSortingTests[Long](bubbleSort [Long], "Bubble Sort [Long]")
 
-    val original_length = arr.length
+class BubbleSortTestFloat extends GenericSortingTests[Float](bubbleSort [Float], "Bubble Sort [Float]")
 
-    bubbleSort(arr)
+class BubbleSortTestDouble extends GenericSortingTests[Double](bubbleSort [Double], "Bubble Sort [Double]")
 
-    original_length == arr.length 
-  }
-  
-  property("Returned array is equal to input array") = forAll { (arr: Array[Int]) =>
-    val ret = bubbleSort(arr)
+class BubbleSortTestChar extends GenericSortingTests[Char](bubbleSort [Char], "Bubble Sort [Char]")
 
-    ret == arr
-  }
-}
+class BubbleSortTestString extends GenericSortingTests[String](bubbleSort [String], "Bubble Sort [String]")
+

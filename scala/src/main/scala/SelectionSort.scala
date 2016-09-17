@@ -1,14 +1,16 @@
 package com.jgdodson.algorithms
 
-
 import Helpers.swap
 import math.Ordering
 
 object SelectionSort {
 
-  def selectionSort(arr: Array[Int]): Unit = {
+  def selectionSort[T](arr: Array[T])(implicit ord: Ordering[T]): Array[T] = {
 
     selectionSort(arr, 0, arr.length)
+
+    // Return a reference to the now-sorted array
+    arr
   }
 
   def selectionSort[T](arr: Array[T], p: Int, r: Int)(implicit ord: Ordering[T]): Array[T] = {
