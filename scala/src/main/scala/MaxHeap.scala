@@ -3,7 +3,6 @@ package com.jgdodson.algorithms
 import Helpers.swap
 import math.Ordering
 
-// TODO: Generalize to be MaxHeap[T]
 // TODO: Do we need the heapSize parameter, really?
 
 /**
@@ -70,6 +69,32 @@ class MaxHeap[T](val arr: Array[T], var heapSize: Int)(implicit ord: Ordering[T]
     // Return a reference to the now-sorted array
     arr
   }
+
+
+  /**
+    * Remove and return the largest item in the heap.
+    *
+    */
+  def pop(): T = {
+
+    if (heapSize < 1) {
+      throw new Error("Popping item from empty MaxHeap")
+    }
+
+    val result = arr(0)
+
+    swap(arr, 0, heapSize - 1)
+
+    heapSize -= 1
+
+    maxHeapify(0)
+
+    return result
+  }
+
+
+  def toSortedList: List[T] = ???
+
 
   private def maxHeapify2(i: Int): Unit = {
     val l: Int = left(i)
