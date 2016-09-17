@@ -50,7 +50,7 @@ object Quicksort {
       i += 1
     }
 
-    for (j <- i+1 until r) {
+    for (j <- i+1 until r-1) {
       if ( ord.lt(arr(j), pivot) ) {
 
         swap(arr, i, j)
@@ -59,7 +59,7 @@ object Quicksort {
     }
 
     // Swap pivot element into place
-    swap(arr, i, r)
+    swap(arr, i, r-1)
 
     return i
   }
