@@ -4,6 +4,7 @@ import Helpers.swap
 import math.Ordering
 
 // TODO: Do we need the heapSize parameter, really?
+// TODO: Add dynamic memory expansion/contraction
 
 /**
   *
@@ -15,7 +16,11 @@ import math.Ordering
   */
 class MaxHeap[T](val arr: Array[T], var heapSize: Int)(implicit ord: Ordering[T]) {
 
+  //-Members------------------------------------------------
+
   val length: Int = arr.length
+
+  //-Error Handling-----------------------------------------
 
   if (heapSize < 0) {
 
@@ -24,8 +29,9 @@ class MaxHeap[T](val arr: Array[T], var heapSize: Int)(implicit ord: Ordering[T]
   } else if (heapSize > arr.length) {
 
     throw new Error("Heap size cannot exceed array length")
-
   }
+
+  //-Initialization-----------------------------------------
 
   // Build a heap at init
   buildMaxHeap()
@@ -44,8 +50,7 @@ class MaxHeap[T](val arr: Array[T], var heapSize: Int)(implicit ord: Ordering[T]
 
   private def parent(i: Int): Int = (i - 1) / 2
 
-  // These methods allow a user of the heap to get the keys of the
-  // children and parents of the given index.
+  // These methods return the keys of the children and parents of the given index.
   def leftKey(i: Int): T = this.apply(left(i))
 
   def rightKey(i: Int): T = this.apply(right(i))
