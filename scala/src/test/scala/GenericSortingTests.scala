@@ -2,6 +2,7 @@ import org.scalacheck.{Gen, Properties, Arbitrary}
 import org.scalacheck.Prop.{forAll, BooleanOperators}
 
 import math.Ordering
+import collection.mutable
 
 /**
   * Base class for tests of array-sorting methods
@@ -28,13 +29,28 @@ abstract class GenericSortingTests[T](sort: Array[T] => Array[T], desc: String)(
   }
 
   property("Array contains the same elements") = forAll { (arr: Array[T]) =>
-    // TODO: Use a multiset
 
-    val before = Set(arr)
+    def counter[T](arr: Array[T]): Map[T, Int] = {
+
+      val counts = mutable.Map[T, Int]()
+
+      for (x <- arr) {
+        counts(x) = counts.getOrElse(x, 0) + 1
+      }
+
+      return counts.toMap
+    }
+
+    // Element count before sorting
+    val before = counter(arr)
+
+    // Sort the array
     sort(arr)
-    val after = Set(arr)
 
-    // Placeholder
+    // Element count after sorting
+    val after = counter(arr)
+
+    // Element count was not changed
     before == after
   }
 }
