@@ -5,7 +5,6 @@ import math.Ordering
 
 /**
   * max-heap property: For all nodes other than the root, arr(parent(i)) >= arr(i)
-  * min-heap property: For all nodes other than the root, arr(parent(i)) <= arr(i)
   *
   * @param arr      The array that backs the heap.
   * @param heapSize The number of array elements to use for the heap.
@@ -14,7 +13,7 @@ class MaxHeap[T](implicit ord: Ordering[T]) {
 
   //-Members------------------------------------------------
 
-  protected val arr = Array.tabulate[T](16)(_ => null)
+  protected val arr: Array[T] = ???
   protected var heapSize = 0
 
   //-Special Methods----------------------------------------
@@ -52,7 +51,7 @@ class MaxHeap[T](implicit ord: Ordering[T]) {
 
     heapSize -= 1
 
-    maxHeapify(0)
+    sinkHeapify(0)
 
     // Return the item from the top of the heap
     result
@@ -66,7 +65,7 @@ class MaxHeap[T](implicit ord: Ordering[T]) {
   def peek(): T = {
 
     if (heapSize < 1) {
-      throw new Error("Peeking item from empty MaxHeap")
+      throw new Error("Peeking at empty MaxHeap")
     }
 
     // Return the item from the top of the heap
@@ -74,11 +73,15 @@ class MaxHeap[T](implicit ord: Ordering[T]) {
   }
 
 
+  /**
+    * Boolean indicating whether the heap is empty
+    *
+    */
   def isEmpty: Boolean = (heapSize == 0)
+
 
   /**
     * Sink an element down to its proper place in the heap.
-    *
     *
     *
     */
@@ -96,10 +99,11 @@ class MaxHeap[T](implicit ord: Ordering[T]) {
 
       if (largest != i) {
         swap(arr, i, largest)
-        maxHeapify(largest)
+        sinkHeapify(largest)
       }
     }
   }
+
 
   /**
     * Float an element up to its proper place in the heap.
@@ -122,6 +126,8 @@ class MaxHeap[T](implicit ord: Ordering[T]) {
    */
   def insert(v: T): MaxHeap[T] = {
 
+    // TODO: Could copy the object when adding it
+
     // TODO: Realloc here
     if (heapSize == arr.length) {
       throw new Error("Heap is full.")
@@ -138,17 +144,24 @@ class MaxHeap[T](implicit ord: Ordering[T]) {
     // Return reference to heap for chaining
     this
   }
-
 }
+
 
 object MaxHeap {
 
-  def apply[T](arr: Array[T])(implicit ord: Ordering[T]): MaxHeap[T] = {
-    new MaxHeap(arr, arr.length)
+  def apply[T](implicit ord: Ordering[T]): MaxHeap[T] = {
+    new MaxHeap[T]
   }
 
-  def apply[T](arr: Array[T], heapSize: Int)(implicit ord: Ordering[T]): MaxHeap[T] = {
-    new MaxHeap(arr, heapSize)
+  def apply[T](seq: Seq[T])(implicit ord: Ordering[T]): MaxHeap[T] = {
+
+    val h = MaxHeap[T]
+
+    for (item <- seq) {
+      h.insert(item)
+    }
+
+    h
   }
 
 }

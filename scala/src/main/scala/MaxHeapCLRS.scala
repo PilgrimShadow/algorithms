@@ -154,7 +154,7 @@ class MaxHeapCLRS[T](val arr: Array[T], var heapSize: Int)(implicit ord: Orderin
   }
 
 
-  def insert(v: T): MaxHeap[T] = {
+  def insert(v: T): MaxHeapCLRS[T] = {
     // TODO: Realloc here
     if (heapSize == length) {
       throw new Error("Heap is full.")
@@ -180,19 +180,19 @@ class MaxHeapCLRS[T](val arr: Array[T], var heapSize: Int)(implicit ord: Orderin
 
 }
 
-object MaxHeap {
+object MaxHeapCLRS {
 
-  def apply[T](arr: Array[T])(implicit ord: Ordering[T]): MaxHeap[T] = {
-    new MaxHeap(arr, arr.length)
+  def apply[T](arr: Array[T])(implicit ord: Ordering[T]): MaxHeapCLRS[T] = {
+    new MaxHeapCLRS(arr, arr.length)
   }
 
-  def apply[T](arr: Array[T], heapSize: Int)(implicit ord: Ordering[T]): MaxHeap[T] = {
-    new MaxHeap(arr, heapSize)
+  def apply[T](arr: Array[T], heapSize: Int)(implicit ord: Ordering[T]): MaxHeapCLRS[T] = {
+    new MaxHeapCLRS(arr, heapSize)
   }
 
   /*
-  def apply[T](keys: T*): MaxHeap[T] = {
-    new MaxHeap(keys.toArray[T], keys.length)
+  def apply[T](keys: T*): MaxHeapCLRS[T] = {
+    new MaxHeapCLRS(keys.toArray[T], keys.length)
   }
   */
 
