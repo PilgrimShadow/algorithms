@@ -1,9 +1,12 @@
-'''
+'''Selection sort
+
   AUTH: Jordan Dodson
   INFO: 
 '''
 
 def selection_sort(arr):
+  '''Sort the array by selection sort'''
+
   _selection_sort(arr, 0, len(arr))
   return arr
 
