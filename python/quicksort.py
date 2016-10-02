@@ -1,41 +1,45 @@
-'''
+'''Quicksort
+
   AUTH: Jordan Dodson
-  INFO: Implementation of quicksort in Python
+  INFO: Implementation of quicksort for instructive purposes.
 '''
 
+from helpers import swap, sort_test
 
 def quicksort(arr):
-  _quicksort(arr, 0, len(arr)-1)
+  '''Sort the array by quicksort'''
+  _quicksort(arr, 0, len(arr))
 
 
 def _quicksort(arr, p, r):
-  '''Sort the closed interval [p, r] recursively'''
+  '''Sort the range [p, r) recursively'''
 
-  if p < r:
+  if r - p > 1:
     q = partition(arr, p, r)
-    _quicksort(arr, p, q-1)
+    _quicksort(arr, p, q)
     _quicksort(arr, q+1, r)
 
 
 def partition(arr, p, r):
+  '''Partition the range [p, r) around a pivot'''
 
-  pivot = arr[r]
+  pivot = arr[r-1]
   i = p
 
   while arr[i] < pivot:
     i += 1
 
-  for j in range(i+1, r):
+  for j in range(i+1, r-1):
     if arr[j] < pivot:
       swap(arr, i, j)
       i += 1
 
-  swap(arr, i, r)
+  # Swap pivot element into place
+  swap(arr, i, r-1)
 
+  # Return the partition index
   return i
 
 
-def swap(arr, i, j):
-  t = arr[i]
-  arr[i] = arr[j]
-  arr[j] = t
+if __name__ == '__main__':
+  sort_test(quicksort, 1000, 1000)

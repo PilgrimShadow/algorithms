@@ -4,6 +4,8 @@
   INFO: 
 '''
 
+from helpers import swap
+
 def selection_sort(arr):
   '''Sort the array by selection sort'''
 
@@ -24,7 +26,3 @@ def _selection_sort(arr, p, r):
     swap(arr, i, min_ind)
 
 
-def swap(arr, i, j):
-  t = arr[i]
-  arr[i] = arr[j]
-  arr[j] = t

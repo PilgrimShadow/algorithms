@@ -3,6 +3,8 @@
   INFO: Implementation of bubblesort
 '''
 
+from helpers import swap
+
 def bubblesort(arr):
 
   # To get us going
@@ -29,8 +31,3 @@ def bubblesort(arr):
   # Return a reference to the now-sorted array
   return arr
 
-
-def swap(arr, i, j):
-  t = arr[i]
-  arr[i] = arr[j]
-  arr[j] = t
