@@ -10,6 +10,10 @@
 def knapsack(items, w):
   '''Solve the knapsack problem.'''
 
+  # How to handle this error
+  if len(items) == 0:
+    pass
+
   # list of sub-solutions
   subs = []
 
